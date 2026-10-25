@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hike CRM</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#12804c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Hike CRM">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="icons/icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--page:#dcdce1;--shell:#eeeeee;--card:#fff;--ink:#11201a;--mute:#7a817d;--line:#e8e8e8;--g:#12804c;--g2:#8fbda6;--g3:#e3f1ea;--warn:#e0a030;--bad:#c0392b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--page);color:var(--ink);font:14px/1.4 Urbanist,system-ui,sans-serif;padding:20px 14px}
+.shell{max-width:1180px;margin:0 auto;background:var(--shell);border-radius:22px;padding:18px 18px 22px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:var(--card);border-radius:99px;padding:10px 18px;font-weight:600}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+.top{background:var(--card);border-radius:99px;padding:12px 18px;display:flex;align-items:center;gap:14px;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:19px;color:var(--g)}
+.logo i{width:26px;height:26px;border-radius:8px 8px 8px 2px;background:var(--g);display:block}
+.tabs{display:flex;gap:2px;background:var(--shell);padding:5px;border-radius:99px}
+.tabs button{background:none;padding:8px 16px;font-weight:500;color:var(--mute)}
+.tabs button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 4px #0001}
+.ricons{display:flex;gap:8px;align-items:center}
+.ci{width:38px;height:38px;border-radius:50%;padding:0;background:var(--shell);display:grid;place-items:center;font-size:15px}
+.av{width:38px;height:38px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;font-weight:700}
+.wel{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin:26px 6px 18px 58px}
+.wel h1{margin:0;font-size:36px;font-weight:600;letter-spacing:-.5px}.wel h1 span{color:var(--mute)}
+.pills{display:flex;gap:10px;flex-wrap:wrap}
+.pill{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:99px;padding:6px 16px;font-weight:600}
+.pill input{border:0;background:none;font:inherit;color:inherit;padding:4px 0;width:auto}
+.main{display:grid;grid-template-columns:50px 1fr;gap:8px}
+.rail{display:flex;flex-direction:column;gap:12px}
+.grp{background:var(--card);border-radius:99px;padding:6px;display:flex;flex-direction:column;gap:6px;align-items:center}
+.grp button{width:38px;height:38px;padding:0;border-radius:50%;background:none;color:var(--ink);font-size:15px}
+.grp button.on{background:var(--g);color:#fff}
+.grid{display:grid;grid-template-columns:1.05fr 1.5fr 1.05fr;gap:14px;grid-template-areas:"goal chart bal" "week chart cred" "hist hist cred";min-width:0}
+.c{background:var(--card);border-radius:22px;padding:18px;min-width:0}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:12px}
+.hd b{display:block;font-size:15px}.hd small{color:var(--mute);font-size:12px}
+.ar{width:38px;height:38px;flex:none;border-radius:50%;padding:0;background:var(--shell);font-size:14px}
+.vcard{background:var(--g);color:#fff;border-radius:16px;padding:16px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between}
+.vcard .t{display:flex;justify-content:space-between;font-weight:700;font-style:italic;font-size:17px}
+.vcard small{opacity:.8;font-size:12px;display:block}
+.vcard .n{font-size:30px;font-weight:600;letter-spacing:-.5px}
+.vcard .f{display:flex;justify-content:space-between;font-size:11px}
+.badge{display:inline-block;background:var(--g);color:#fff;border-radius:99px;padding:3px 10px;font-size:11px;font-weight:600}
+.badge.l{background:#d6efe2;color:var(--g)}
+.big{font-size:32px;font-weight:600;letter-spacing:-.5px}.big .g{color:var(--mute)}
+.tg{display:flex;background:var(--shell);border-radius:99px;padding:4px}
+.tg button{background:none;padding:7px 16px;font-size:12px;font-weight:500;color:var(--mute)}
+.tg button.on{background:var(--g);color:#fff}
+.grid .goal{grid-area:goal}.chart{grid-area:chart}.bal{grid-area:bal}.week{grid-area:week;display:flex;flex-direction:column;justify-content:center}.cred{grid-area:cred}.hist{grid-area:hist}
+.week .row{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+.week .big{font-size:26px}
+.chart svg,.bal svg{width:100%;display:block}
+.drafts{background:var(--shell);border-radius:16px;padding:14px;margin-top:16px}
+.dots{display:flex;gap:6px;margin-top:10px;align-items:center}
+.dc{width:40px;height:40px;border-radius:50%;padding:0;background:var(--g2);color:#fff;font-weight:700;display:grid;place-items:center}
+.dc.more{background:var(--g)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th{font-size:12px;color:var(--mute);font-weight:500;text-align:left;padding:6px 8px}
+td{padding:10px 8px;font-size:13px;white-space:nowrap}
+tbody tr{cursor:pointer}tbody tr:hover td,tbody tr.sel td{background:var(--shell)}
+tbody td:first-child{border-radius:12px 0 0 12px}tbody td:last-child{border-radius:0 12px 12px 0}
+.who{display:flex;align-items:center;gap:10px}.who .dc{width:32px;height:32px;font-size:12px}.who small{display:block;font-size:10px;color:var(--g)}
+.st{display:inline-flex;align-items:center;gap:6px}.st i{width:7px;height:7px;border-radius:50%;background:var(--g)}
+.neg{color:var(--bad)}
+.empty{padding:20px;text-align:center;color:var(--mute)}
+.ov{position:fixed;inset:0;background:#11201a99;display:grid;place-items:center;padding:16px;z-index:50}.ov[hidden]{display:none}
+.dlg{background:var(--card);border-radius:22px;padding:22px;width:100%;max-width:410px;max-height:92vh;overflow:auto}
+.dlg h4{margin:0 0 12px;font-size:17px;display:flex;justify-content:space-between;align-items:center}
+.f{margin-bottom:8px}.f label{display:block;font-size:12px;color:var(--mute);margin-bottom:3px}
+.f input,.f textarea{width:100%;font:inherit;color:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.live{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--shell);border-radius:14px;padding:12px;margin:10px 0;font-size:12px;color:var(--mute)}.live b{display:block;font-size:16px;color:var(--ink)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}.btns .p{background:var(--g);color:#fff}.btns button{border:1px solid var(--line)}.btns .p{border:0}
+.msg{color:var(--bad);font-size:12px;min-height:16px;margin-top:6px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;z-index:60}.toast[hidden]{display:none}
+.dlg.w{max-width:760px}
+.ir{display:grid;grid-template-columns:1fr 64px 92px 92px;gap:6px;margin-bottom:6px;align-items:center}
+.ir.hd2{font-size:12px;color:var(--mute)}.ir b{text-align:right;font-size:13px}
+.ir input,.dlg td input{width:100%;font:inherit;color:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+.dlg td button,#badd,#sadd{padding:7px 14px;font-size:12px;border:1px solid var(--line)}
+.dlg td button.pd{background:var(--g);color:#fff;border-color:var(--g)}
+.sum{margin:12px 0;text-align:right;font-size:13px;color:var(--mute);line-height:1.8}.sum b{color:var(--ink)}
+.dlg table{min-width:560px}
+.slipv{border:1px solid var(--line);border-radius:16px;padding:18px;background:var(--card)}
+.slipv h2{margin:0;color:var(--g);font-size:22px}.slipv p{margin:4px 0;font-size:13px;color:var(--mute)}.slipv p b{color:var(--ink)}
+.slipv table{width:100%;min-width:0;margin:12px 0;border-collapse:collapse}.slipv td,.slipv th{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;font-size:14px}.slipv td+td,.slipv th+th{text-align:right}
+.slipv tr.net th{background:var(--g3);color:var(--g);font-size:16px}
+.slipv .stp{display:inline-block;border-radius:99px;padding:3px 12px;font-size:12px;font-weight:700;background:#fdf0d5;color:#9a6a00}.slipv .stp.ok{background:var(--g3);color:var(--g)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.chips button{padding:6px 12px;font-size:12px;border:1px solid var(--line)}.chips button.on{background:var(--g);color:#fff;border-color:var(--g)}
+.f select,.dlg td select{width:100%;font:inherit;color:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+.wa{display:inline-block;background:#25d366;color:#fff;text-decoration:none;border-radius:99px;padding:7px 14px;font-size:12px;font-weight:700}
+.dlg td small{color:var(--mute);font-size:11px}.note{font-size:12px;color:var(--mute);margin:6px 0 10px}.due{color:var(--bad)!important;font-weight:700}
+#pr{display:none}
+@media print{body>*:not(#pr){display:none!important}body{background:#fff;padding:0}#pr{display:block!important;color:#000;padding:24px;font-family:Urbanist,system-ui,sans-serif}#pr table{width:100%;border-collapse:collapse;min-width:0;margin:12px 0}#pr th,#pr td{border:1px solid #bbb;padding:6px 8px;text-align:left;font-size:13px;color:#000}#pr h2{margin:0 0 4px}}
+@media(max-width:1000px){.main{grid-template-columns:1fr}.rail{flex-direction:row}.grp{flex-direction:row;border-radius:99px}.grid{grid-template-columns:1fr 1fr;grid-template-areas:"goal week" "chart chart" "bal cred" "hist hist"}.wel{margin-left:6px}.tabs{display:none}}
+@media(max-width:620px){.grid{grid-template-columns:1fr;grid-template-areas:"goal" "week" "chart" "bal" "cred" "hist"}.wel h1{font-size:28px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="top">
+  <div class="logo"><i></i>Hike CRM</div>
+  <nav class="tabs" id="tabs" aria-label="Sections"><button class="on" data-go="top">Dashboard</button><button data-act="add">Daily Entry</button><button data-act="bill">Billing</button><button data-act="sal">Salary</button><button data-act="leads">Leads</button><button data-act="prop">Proposals</button><button data-act="staff">Staff</button><button data-go="hist">Reports</button><button data-go="hist">History</button></nav>
+  <div class="ricons"><span class="ci" aria-hidden="true">⌕</span><span class="ci" aria-hidden="true">🔔︎</span><span class="av" aria-hidden="true">HC</span></div>
+</header>
+<div class="wel" id="top"><h1>Welcome Back, <span>Boss</span></h1>
+  <div class="pills"><label class="pill">▦ <input type="month" id="month" aria-label="Month"></label><button class="pill" data-act="bill">Billing</button><button class="pill" data-act="sal">Salary</button><button class="pill" data-act="leads">Leads</button><button class="pill" data-act="prop">Proposals</button><button class="pill" data-act="staff">Staff</button><button class="pill" id="addnew">＋ Add New Entry</button></div></div>
+
+<div class="main">
+<aside class="rail" aria-label="Shortcuts">
+  <div class="grp"><button class="on" data-go="top" aria-label="Dashboard">▦</button><button data-go="chart" aria-label="Chart">⌁</button><button data-act="add" aria-label="Add entry">▣</button><button data-go="cred" aria-label="Drafts">☑</button></div>
+  <div class="grp"><button id="copy" aria-label="Copy CSV">⎘</button><button id="today" aria-label="Jump to today">◷</button></div>
+</aside>
+<div class="grid">
+  <section class="c goal" id="goal"><div class="hd"><div><b>Today’s Profit</b><small>Net after all costs</small></div><button class="ar" data-act="add" aria-label="Edit today">↗</button></div>
+    <div class="vcard"><div class="t"><span>TODAY</span><span id="vst">OPEN</span></div><div><small>Net profit</small><div class="n" id="vp">₹0</div></div><div class="f"><span id="vs">Sales ₹0</span><span id="vm">Meta ₹0</span></div></div></section>
+
+  <section class="c week"><small style="color:var(--mute)">Weekly Revenue</small><div class="row"><span class="big" id="wk">₹0</span><span class="badge" id="wb">–</span></div></section>
+
+  <section class="c chart" id="chart"><div class="hd" style="align-items:center"><div style="display:flex;gap:10px;align-items:center"><span class="ci">▥</span><b>Profit & Meta spend</b></div><div class="tg" id="tgc"><button class="on" data-m="d">Daily</button><button data-m="m">Monthly</button></div></div><div id="bars"></div></section>
+
+  <section class="c bal"><div class="hd"><div><b>Sales Trend</b><small>This month</small></div><button class="ar" id="vall" aria-label="Show all rows">↗</button></div>
+    <div style="text-align:center;font-size:12px;color:var(--mute)" id="tl">Total sales</div><div class="big" style="text-align:center" id="bt">₹0</div><div id="area"></div>
+    <div class="tg" id="tgb" style="width:max-content;margin:-6px auto 0;position:relative"><button class="on" data-m="s">Sales ↑</button><button data-m="p">Profit ↓</button></div></section>
+
+  <section class="c cred" id="cred"><div class="hd" style="align-items:center"><div style="display:flex;gap:10px;align-items:center"><span class="ci">▤</span><div><b>Meta Spend</b><small>Ad spend this month</small></div></div></div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:18px 0 6px"><span class="big" id="ct">₹0</span><span class="badge" id="cb">–</span></div>
+    <div class="drafts"><div class="hd" style="margin:0"><div><b>Drafts to close</b><small>Saved but not closed</small></div><button class="ar" data-act="add" aria-label="Add entry">↗</button></div><div class="dots" id="dr"></div></div></section>
+
+  <section class="c hist" id="hist"><div class="hd"><div><b>Daily Records</b><small>Tap a day to edit or close it</small></div><button class="ar" id="vall2" aria-label="Show all rows">↗</button></div>
+    <div class="tw"><table><thead><tr><th>Day</th><th>Date</th><th>Orders</th><th>Status</th><th>Meta spend</th><th>Profit</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+</div>
+</div>
+</div>
+
+<div class="ov" id="ov" hidden><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="ft">
+  <h4><span id="ft">Today’s entry</span><button class="ci" id="x" aria-label="Close form">✕</button></h4>
+  <div class="f"><label for="date">Date</label><input type="date" id="date"></div>
+  <div class="f2"><div class="f"><label for="orders">Orders</label><input type="number" id="orders" min="0" step="1" inputmode="numeric"></div><div class="f"><label for="sales">Sales (₹)</label><input type="number" id="sales" min="0" step="any" inputmode="decimal"></div>
+  <div class="f"><label for="cogs">Product cost (₹)</label><input type="number" id="cogs" min="0" step="any" inputmode="decimal"></div><div class="f"><label for="metaIn">Meta spend (₹)</label><input type="number" id="metaIn" min="0" step="any" inputmode="decimal"></div></div>
+  <div class="f"><label for="other">Other expenses (₹)</label><input type="number" id="other" min="0" step="any" inputmode="decimal"></div>
+  <div class="f"><label for="note">Closing note</label><textarea id="note" rows="2"></textarea></div>
+  <div class="live" aria-live="polite"><div>Profit<b id="lp">₹0</b></div><div>Margin<b id="lm">0%</b></div><div>ROAS<b id="lr">–</b></div><div>Meta cost per order<b id="lc">–</b></div></div>
+  <div class="btns"><button id="save">Save draft</button><button class="p" id="close">Close day</button><button id="reopen" hidden>Reopen day</button></div><div class="msg" id="msg" role="alert"></div></div></div>
+<div class="ov" id="bov" hidden><div class="dlg w" role="dialog" aria-modal="true" aria-labelledby="bh">
+  <h4><span id="bh">Billing and invoices</span><button class="ci" id="bx" aria-label="Close billing">✕</button></h4>
+  <div class="f2"><div class="f"><label for="bc">Customer name</label><input id="bc"></div><div class="f"><label for="bp">Phone</label><input id="bp" inputmode="tel"></div>
+  <div class="f"><label for="bdt">Invoice date</label><input type="date" id="bdt"></div><div class="f"><label for="bn">Invoice no.</label><input id="bn" readonly></div></div>
+  <div class="ir hd2"><span>Item or service</span><span>Qty</span><span>Rate (₹)</span><span style="text-align:right">Amount</span></div>
+  <div id="bi"></div><button id="badd">＋ Add item</button>
+  <div class="f2" style="margin-top:10px"><div class="f"><label for="bg">GST %</label><input type="number" id="bg" min="0" step="any" value="0"></div><div class="f"><label for="bd">Discount (₹)</label><input type="number" id="bd" min="0" step="any" value="0"></div></div>
+  <div class="sum" id="bs"></div><div class="msg" id="bm" role="alert"></div>
+  <div class="btns"><button class="p" id="bsave">Save invoice</button><button id="bprint">Print or save PDF</button><button id="bcopy">Copy text</button><button id="bnew">New invoice</button></div>
+  <h4 style="margin-top:22px">Saved invoices</h4>
+  <div class="tw"><table><thead><tr><th>No.</th><th>Date</th><th>Customer</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody id="bl"></tbody></table></div>
+</div></div>
+<div class="ov" id="sov" hidden><div class="dlg w" role="dialog" aria-modal="true" aria-labelledby="sh">
+  <h4><span id="sh">Staff salary</span><button class="ci" id="sx" aria-label="Close salary">✕</button></h4>
+  <div class="f" style="max-width:200px"><label for="sm">Month</label><input type="month" id="sm"></div>
+  <div class="tw"><table><thead><tr><th>Staff</th><th>Monthly salary (₹)</th><th>Deduction (₹)</th><th>Net pay</th><th></th></tr></thead><tbody id="sb"></tbody></table></div>
+  <div class="sum" id="st2"></div>
+  <div class="btns"><button id="sadd">＋ Add staff</button><button data-act="staff">Staff details</button><button id="sbill">Print salary bill</button></div>
+</div></div>
+<div class="ov" id="gov" hidden><div class="dlg w" role="dialog" aria-modal="true" aria-labelledby="gh">
+  <h4><span id="gh">Staff details</span><button class="ci" id="gx" aria-label="Close staff details">✕</button></h4>
+  <div class="f2"><div class="f"><label for="gn">Staff name</label><input id="gn"></div><div class="f"><label for="gr">Role or designation</label><input id="gr" placeholder="e.g. Sales executive"></div>
+  <div class="f"><label for="gp">Phone</label><input id="gp" inputmode="tel"></div><div class="f"><label for="ge">Email</label><input id="ge" type="email"></div>
+  <div class="f"><label for="gj">Joining date</label><input type="date" id="gj"></div><div class="f"><label for="gs">Monthly salary (₹)</label><input type="number" id="gs" min="0" step="any" value="5000"></div>
+  <div class="f"><label for="ga">Address</label><input id="ga"></div><div class="f"><label for="gno">Note</label><input id="gno"></div></div>
+  <div class="msg" id="gm" role="alert"></div>
+  <div class="btns"><button class="p" id="gsave">Save staff</button><button id="gclear">Clear form</button></div>
+  <div class="sum" id="gsum" style="text-align:left;margin-top:16px"></div>
+  <div class="tw"><table><thead><tr><th>Staff</th><th>Contact</th><th>Joined</th><th>Salary</th><th></th></tr></thead><tbody id="gl"></tbody></table></div>
+</div></div>
+<div class="ov" id="qov" hidden><div class="dlg w" role="dialog" aria-modal="true" aria-labelledby="qh">
+  <h4><span id="qh">Client proposals</span><button class="ci" id="qx" aria-label="Close proposals">✕</button></h4>
+  <div class="f2"><div class="f"><label for="qcl">Pick a client from Leads</label><select id="qcl"></select></div><div class="f"><label for="qc">Client name</label><input id="qc"></div>
+  <div class="f"><label for="qco">Company</label><input id="qco"></div><div class="f"><label for="qp">Phone</label><input id="qp" inputmode="tel"></div>
+  <div class="f"><label for="qe">Email</label><input id="qe" type="email"></div><div class="f"><label for="qt">Proposal title</label><input id="qt" placeholder="e.g. Social media and Meta ads management"></div>
+  <div class="f"><label for="qd">Date</label><input type="date" id="qd"></div><div class="f"><label for="qv">Valid until</label><input type="date" id="qv"></div>
+  <div class="f"><label for="qn">Proposal no.</label><input id="qn" readonly></div><div class="f"><label>&nbsp;</label><button id="qauto" style="border:1px solid var(--line);width:100%">Auto-write intro and terms</button></div></div>
+  <div class="f"><label for="qi">Introduction</label><textarea id="qi" rows="4"></textarea></div>
+  <div class="ir hd2"><span>Scope or service</span><span>Qty</span><span>Rate (₹)</span><span style="text-align:right">Amount</span></div>
+  <div id="qit"></div><button id="qadd" style="padding:7px 14px;font-size:12px;border:1px solid var(--line)">＋ Add item</button>
+  <div class="f2" style="margin-top:10px"><div class="f"><label for="qg">GST %</label><input type="number" id="qg" min="0" step="any" value="0"></div><div class="f"><label for="qdis">Discount (₹)</label><input type="number" id="qdis" min="0" step="any" value="0"></div></div>
+  <div class="sum" id="qs"></div>
+  <div class="f"><label for="qterm">Terms and payment</label><textarea id="qterm" rows="4"></textarea></div>
+  <div class="msg" id="qm" role="alert"></div>
+  <div class="btns"><button class="p" id="qpdf">Download PDF</button><button id="qsave">Save proposal</button><button id="qprint">Print</button><button id="qnew">New proposal</button></div>
+  <h4 style="margin-top:22px">Saved proposals</h4>
+  <div class="tw"><table><thead><tr><th>No.</th><th>Client</th><th>Title</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody id="ql"></tbody></table></div>
+</div></div>
+<div class="ov" id="wov" hidden><div class="dlg w" role="dialog" aria-modal="true" aria-labelledby="wh">
+  <h4><span id="wh">WhatsApp leads</span><button class="ci" id="wx" aria-label="Close leads">✕</button></h4>
+  <div class="note">Tap WhatsApp on a lead to open a chat with your message ready to send. Replies stay in WhatsApp; add or update the lead here to track it.</div>
+  <div class="f2"><div class="f"><label for="wn">Lead name</label><input id="wn"></div><div class="f"><label for="wp">WhatsApp number (10 digits, or with country code)</label><input id="wp" inputmode="tel"></div>
+  <div class="f"><label for="ws">Source</label><select id="ws"></select></div><div class="f"><label for="wst">Stage</label><select id="wst"></select></div>
+  <div class="f"><label for="wfu">Follow-up date</label><input type="date" id="wfu"></div><div class="f"><label for="wno">Note</label><input id="wno"></div></div>
+  <div class="msg" id="wm" role="alert"></div>
+  <div class="btns"><button class="p" id="wsave">Save lead</button><button id="wclear">Clear form</button></div>
+  <div class="f" style="margin-top:14px"><label for="wtpl">Message template ({name} becomes the lead’s name)</label><textarea id="wtpl" rows="2"></textarea></div>
+  <div class="f2"><div class="f"><label for="wmy">Your business WhatsApp number</label><input id="wmy" inputmode="tel" placeholder="e.g. 9876543210"></div><div class="f"><label>Click-to-chat link for Meta ads and posts</label><button id="wmycopy" style="border:1px solid var(--line);width:100%">Copy my WhatsApp link</button></div></div>
+  <div class="chips" id="wch"></div>
+  <div class="f"><label for="wq">Search leads</label><input id="wq" type="search" placeholder="Name, number or note"></div>
+  <div class="tw"><table><thead><tr><th>Lead</th><th>Stage</th><th>Follow-up</th><th>Last chat</th><th></th></tr></thead><tbody id="wl"></tbody></table></div>
+</div></div>
+<div class="ov" id="lov" hidden><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="lh">
+  <h4><span id="lh">Salary slip</span><button class="ci" id="lx" aria-label="Close salary slip">✕</button></h4>
+  <div id="slip" class="slipv"></div>
+  <div class="btns" style="margin-top:14px"><button class="p" id="lprint">Print or save PDF</button><button id="lcopy">Copy text</button><button id="lclose">Close</button></div>
+</div></div>
+<div id="pr" aria-hidden="true"></div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+var KEY="daily-closing-v1",data={};
+try{var s=localStorage.getItem(KEY);if(s)data=JSON.parse(s)||{};}catch(e){}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}}
+var $=function(i){return document.getElementById(i)};
+var inr=new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0});
+function big(n){var p=Math.abs(n).toFixed(2).split(".");return(n<0?"-":"")+"₹"+Number(p[0]).toLocaleString("en-IN")+'<span class="g">.'+p[1]+'</span>'}
+function short(n){var a=Math.abs(n),s=a>=1e5?(a/1e5).toFixed(1)+"L":a>=1e3?(a/1e3).toFixed(0)+"k":String(Math.round(a));return(n<0?"-":"")+s}
+var num=function(v){var n=parseFloat(v);return isFinite(n)&&n>0?n:0};
+function fmt(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function parse(k){var p=k.split("-");return new Date(+p[0],+p[1]-1,+p[2])}
+function shift(k,n){var d=parse(k);d.setDate(d.getDate()+n);return fmt(d)}
+var TODAY=fmt(new Date()),cur=TODAY,showAll=false,cm="d",bm="s",tt;
+function calc(r){var p=r.sales-r.cogs-r.meta-r.other;return{profit:p,margin:r.sales?p/r.sales*100:0,roas:r.meta?r.sales/r.meta:null,cpo:r.orders?r.meta/r.orders:null}}
+function read(){return{orders:num($("orders").value),sales:num($("sales").value),cogs:num($("cogs").value),meta:num($("metaIn").value),other:num($("other").value),note:$("note").value.trim()}}
+function toast(t){var e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(tt);tt=setTimeout(function(){e.hidden=true},2600)}
+function live(){var c=calc(read());$("lp").textContent=inr.format(c.profit);$("lm").textContent=c.margin.toFixed(1)+"%";$("lr").textContent=c.roas===null?"–":c.roas.toFixed(2)+"x";$("lc").textContent=c.cpo===null?"–":inr.format(c.cpo)}
+function loadForm(){var r=data[cur]||{};$("date").value=cur;
+ [["orders","orders"],["sales","sales"],["cogs","cogs"],["metaIn","meta"],["other","other"]].forEach(function(p){$(p[0]).value=r[p[1]]!=null?r[p[1]]:""});
+ $("note").value=r.note||"";$("msg").textContent="";var cl=!!r.closed;
+ ["orders","sales","cogs","metaIn","other","note"].forEach(function(k){$(k).disabled=cl});
+ $("save").hidden=cl;$("close").hidden=cl;$("reopen").hidden=!cl;
+ $("ft").textContent=cur===TODAY?"Today’s entry":"Entry for "+cur;live()}
+function setDate(k){cur=k;$("month").value=k.slice(0,7);loadForm();render()}
+function openForm(k){if(k)setDate(k);$("ov").hidden=false;$(data[cur]&&data[cur].closed?"reopen":"sales").focus()}
+function closeForm(){$("ov").hidden=true}
+function saveDay(c){var r=read();r.closed=c;data[cur]=r;persist();closeForm();loadForm();render();toast(c?"Day closed and locked.":"Draft saved.")}
+function sum(keys,f){return keys.reduce(function(a,k){return a+f(data[k])},0)}
+function lastDays(n){var o=[];for(var i=n-1;i>=0;i--)o.push(shift(TODAY,-i));return o}
+function bars(){
+ var items=[];
+ if(cm==="d"){lastDays(7).forEach(function(k){var r=data[k];items.push({l:parse(k).toLocaleDateString("en-IN",{weekday:"short"}),p:r?calc(r).profit:0,m:r?r.meta:0})})}
+ else{var d=new Date(TODAY);for(var i=5;i>=0;i--){var x=new Date(d.getFullYear(),d.getMonth()-i,1),pre=fmt(x).slice(0,7),ks=Object.keys(data).filter(function(k){return k.indexOf(pre)===0});items.push({l:x.toLocaleDateString("en-IN",{month:"short"}),p:sum(ks,function(r){return calc(r).profit}),m:sum(ks,function(r){return r.meta})})}}
+ var mx=Math.max(1,Math.max.apply(null,items.map(function(i){return Math.max(i.p,0)}))),hi=0;
+ items.forEach(function(it,i){if(it.p>items[hi].p)hi=i});
+ var W=520,H=250,L=36,bw=(W-L)/items.length,s='<svg viewBox="0 0 '+W+' '+(H+34)+'" role="img" aria-label="Profit by period"><defs><pattern id="st" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#8fbda6"/><rect width="2" height="6" fill="#7fb097"/></pattern><pattern id="sd" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#12804c"/><rect width="2" height="6" fill="#0d6b3f"/></pattern></defs>';
+ for(var g=0;g<=4;g++){var y=20+(H-30)*(1-g/4);s+='<line x1="'+L+'" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="#e3e3e3" stroke-dasharray="4 4"/><text x="0" y="'+(y+4)+'" font-size="11" fill="#7a817d">'+short(mx*g/4)+'</text>'}
+ items.forEach(function(it,i){var h=Math.max(it.p,0)/mx*(H-30),x=L+i*bw+bw*.17,w=bw*.66,y=H-10-h;
+  s+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+Math.max(h,4)+'" rx="'+Math.min(w/2,22)+'" fill="url(#'+(i===hi&&it.p>0?"sd":"st")+')"/><text x="'+(x+w/2)+'" y="'+(H+20)+'" text-anchor="middle" font-size="11" fill="#7a817d">'+it.l+'</text>';
+  if(i===hi&&it.p>0)s+='<rect x="'+(x+w/2-34)+'" y="'+(y-34)+'" width="68" height="20" rx="10" fill="#12804c"/><text x="'+(x+w/2)+'" y="'+(y-20)+'" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">'+inr.format(it.p)+'</text><circle cx="'+(x+w/2)+'" cy="'+(y-4)+'" r="6" fill="#12804c" stroke="#fff" stroke-width="2"/>'});
+ $("bars").innerHTML=s+'</svg>'}
+function area(m){
+ var n=new Date(+m.slice(0,4),+m.slice(5,7),0).getDate(),v=[];
+ for(var i=1;i<=n;i++){var r=data[m+"-"+String(i).padStart(2,"0")];v.push(r?(bm==="s"?r.sales:calc(r).profit):0)}
+ var mx=Math.max(1,Math.max.apply(null,v)),mn=Math.min(0,Math.min.apply(null,v)),W=300,H=110,pts=v.map(function(y,i){return[i/(n-1||1)*W,H-6-(y-mn)/(mx-mn||1)*(H-18)]}),d="M"+pts.map(function(p){return p[0].toFixed(1)+" "+p[1].toFixed(1)}).join(" L");
+ $("area").innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Daily trend this month" preserveAspectRatio="none" style="height:120px;margin:10px 0"><defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#12804c" stop-opacity=".28"/><stop offset="1" stop-color="#12804c" stop-opacity="0"/></linearGradient></defs><path d="'+d+' L'+W+' '+H+' L0 '+H+'Z" fill="url(#ag)"/><path d="'+d+'" fill="none" stroke="#12804c" stroke-width="2"/></svg>'}
+function render(){
+ var m=cur.slice(0,7),all=Object.keys(data).filter(function(k){return k.indexOf(m)===0}).sort().reverse();
+ var S=sum(all,function(r){return r.sales}),M=sum(all,function(r){return r.meta}),P=sum(all,function(r){return calc(r).profit});
+ var t=data[TODAY],tc=t?calc(t):{profit:0};
+ $("vp").textContent=inr.format(tc.profit);$("vst").textContent=t&&t.closed?"CLOSED":"OPEN";$("vs").textContent="Sales "+inr.format(t?t.sales:0);$("vm").textContent="Meta "+inr.format(t?t.meta:0);
+ var w=lastDays(7).filter(function(k){return data[k]}),ws=sum(w,function(r){return r.sales}),wm=sum(w,function(r){return r.meta});
+ $("wk").textContent="+"+inr.format(ws).replace("₹","")+" INR";$("wb").textContent=wm?(ws/wm).toFixed(2)+"x ROAS":"–";
+ $("bt").innerHTML=big(bm==="s"?S:P);$("tl").textContent=bm==="s"?"Total sales":"Total profit";
+ $("ct").innerHTML=big(M);$("cb").textContent=M?(S/M).toFixed(2)+"x ROAS":"–";
+ var dr=Object.keys(data).filter(function(k){return !data[k].closed}).sort().reverse();
+ $("dr").innerHTML=dr.length?dr.slice(0,3).map(function(k){return'<button class="dc" data-d="'+k+'" aria-label="Open '+k+'">'+k.slice(8)+'</button>'}).join("")+(dr.length>3?'<span class="dc more">+'+(dr.length-3)+'</span>':""):'<span style="color:var(--mute);font-size:12px">All saved days are closed.</span>';
+ var lim=showAll?all.length:Math.min(all.length,6);
+ $("rows").innerHTML=all.slice(0,lim).map(function(k){var r=data[k],c=calc(r);
+  return'<tr data-d="'+k+'"'+(k===cur?' class="sel"':"")+'><td><div class="who"><span class="dc">'+k.slice(8)+'</span><div>'+parse(k).toLocaleDateString("en-IN",{weekday:"long"})+'<small>'+(r.sales?(c.margin>=0?"+":"")+c.margin.toFixed(1)+"% margin":"–")+'</small></div></div></td><td>'+parse(k).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})+'</td><td>'+r.orders+'</td><td><span class="st"><i style="background:'+(r.closed?"var(--g)":"var(--warn)")+'"></i>'+(r.closed?"Closed":"Draft")+'</span></td><td>'+inr.format(r.meta)+'</td><td class="'+(c.profit<0?"neg":"")+'">'+inr.format(c.profit)+'</td></tr>'}).join("")||'<tr><td colspan="6" class="empty">No days saved this month. Choose Add New Entry.</td></tr>';
+ bars();area(m)}
+["orders","sales","cogs","metaIn","other"].forEach(function(k){$(k).addEventListener("input",live)});
+$("save").onclick=function(){saveDay(false)};
+$("close").onclick=function(){var r=read();if(!r.sales&&!r.meta){$("msg").textContent="Enter sales or Meta spend before closing the day.";return}saveDay(true)};
+$("reopen").onclick=function(){if(data[cur]){data[cur].closed=false;persist();loadForm();render();$("sales").focus();toast("Day reopened.")}};
+$("date").onchange=function(){if($("date").value)setDate($("date").value)};
+$("x").onclick=closeForm;$("ov").onclick=function(e){if(e.target===$("ov"))closeForm()};
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeForm()});
+$("month").onchange=function(){if($("month").value)setDate($("month").value+"-01")};
+$("rows").onclick=function(e){var tr=e.target.closest("tr[data-d]");if(tr)openForm(tr.dataset.d)};
+$("dr").onclick=function(e){var b=e.target.closest("button[data-d]");if(b)openForm(b.dataset.d)};
+$("tgc").onclick=function(e){var b=e.target.closest("button");if(!b)return;cm=b.dataset.m;[].forEach.call($("tgc").children,function(x){x.classList.toggle("on",x===b)});bars()};
+$("tgb").onclick=function(e){var b=e.target.closest("button");if(!b)return;bm=b.dataset.m;[].forEach.call($("tgb").children,function(x){x.classList.toggle("on",x===b)});render()};
+function allv(){showAll=!showAll;render();toast(showAll?"Showing every day this month.":"Showing the latest 6 days.");$("hist").scrollIntoView({behavior:"smooth"})}
+$("vall").onclick=allv;$("vall2").onclick=allv;
+$("addnew").onclick=function(){openForm(TODAY)};
+$("today").onclick=function(){setDate(TODAY);$("top").scrollIntoView({behavior:"smooth"});toast("Back to today.")};
+document.addEventListener("click",function(e){var a=e.target.closest("[data-act='add']");if(a){openForm(TODAY);return}var g=e.target.closest("[data-go]");if(g&&g.dataset.go){var el=$(g.dataset.go);if(el)el.scrollIntoView({behavior:"smooth",block:"start"});var p=g.parentNode;if(p&&(p.id==="tabs"||p.classList.contains("grp")))[].forEach.call(p.children,function(x){x.classList.toggle("on",x===g)})}});
+$("copy").onclick=function(){var m=cur.slice(0,7),ks=Object.keys(data).filter(function(k){return k.indexOf(m)===0}).sort();
+ var out=["Date,Orders,Sales,Product cost,Meta spend,Other,Profit,Status"].concat(ks.map(function(k){var r=data[k];return[k,r.orders,r.sales,r.cogs,r.meta,r.other,calc(r).profit,r.closed?"Closed":"Draft"].join(",")})).join("\n");
+ try{navigator.clipboard.writeText(out).then(function(){toast("CSV copied. Paste it into Excel or Sheets.")},function(){toast("Copy was blocked by the browser.")})}catch(e){toast("Copy was blocked by the browser.")}};
+var IK="hike-crm-invoices-v1",SK="hike-crm-staff-v1",inv=[],staff=[],pay={},items=[{d:"",q:1,r:0}],ed=-1;
+try{inv=JSON.parse(localStorage.getItem(IK))||[];}catch(e){}
+try{var sv=JSON.parse(localStorage.getItem(SK));if(sv){staff=sv.staff||[];pay=sv.pay||{}}}catch(e){}
+if(!staff.length)staff=[{id:"s1",name:"Staff 1",salary:5000}];
+function saveInv(){try{localStorage.setItem(IK,JSON.stringify(inv))}catch(e){}}
+function saveSal(){try{localStorage.setItem(SK,JSON.stringify({staff:staff,pay:pay}))}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function doPrint(h){$("pr").innerHTML=h;try{window.print()}catch(e){toast("Printing is blocked here. Use Copy text instead.")}}
+function copyTxt(t){try{navigator.clipboard.writeText(t).then(function(){toast("Copied.")},function(){toast("Copy was blocked by the browser.")})}catch(e){toast("Copy was blocked by the browser.")}}
+function invNo(){return"INV-"+String(inv.length+1).padStart(4,"0")}
+function bTotals(){var sub=items.reduce(function(a,i){return a+num(i.q)*num(i.r)},0),g=sub*num($("bg").value)/100,d=num($("bd").value);return{sub:sub,gst:g,dis:d,tot:Math.max(0,sub+g-d)}}
+function bSum(){var t=bTotals();$("bs").innerHTML="Subtotal: <b>"+inr.format(t.sub)+"</b><br>GST: <b>"+inr.format(t.gst)+"</b><br>Discount: <b>"+inr.format(t.dis)+"</b><br>Total: <b style=\"font-size:20px\">"+inr.format(t.tot)+"</b>"}
+function bRows(){$("bi").innerHTML=items.map(function(it,i){return'<div class="ir"><input data-i="'+i+'" data-f="d" placeholder="Item or service" value="'+esc(it.d)+'" aria-label="Item"><input data-i="'+i+'" data-f="q" type="number" min="0" step="any" value="'+it.q+'" aria-label="Quantity"><input data-i="'+i+'" data-f="r" type="number" min="0" step="any" value="'+it.r+'" aria-label="Rate"><b>'+inr.format(num(it.q)*num(it.r))+'</b></div>'}).join("");bSum()}
+function bList(){$("bl").innerHTML=inv.map(function(o,n){return{o:o,n:n}}).reverse().map(function(x){var o=x.o;return'<tr><td>'+esc(o.no)+'</td><td>'+esc(o.date)+'</td><td>'+esc(o.cust)+'</td><td>'+inr.format(o.tot)+'</td><td><button data-n="'+x.n+'" data-a="pay" class="'+(o.paid?"pd":"")+'">'+(o.paid?"Paid":"Unpaid")+'</button></td><td><button data-n="'+x.n+'" data-a="open">Open</button></td></tr>'}).join("")||'<tr><td colspan="6" class="empty">No invoices yet.</td></tr>'}
+function newBill(){items=[{d:"",q:1,r:0}];ed=-1;$("bc").value="";$("bp").value="";$("bdt").value=TODAY;$("bn").value=invNo();$("bg").value=0;$("bd").value=0;$("bm").textContent="";bRows()}
+function bObj(){var t=bTotals();return{no:$("bn").value,date:$("bdt").value,cust:$("bc").value.trim(),phone:$("bp").value.trim(),items:items.filter(function(i){return num(i.q)*num(i.r)>0||i.d.trim()}).map(function(i){return{d:i.d,q:num(i.q),r:num(i.r)}}),gst:num($("bg").value),dis:t.dis,sub:t.sub,gstAmt:t.gst,tot:t.tot}}
+function billHtml(o){return'<h2>Hike CRM</h2><p><b>INVOICE '+esc(o.no)+'</b> · '+esc(o.date)+'</p><p><b>Bill to:</b> '+esc(o.cust||"Customer")+(o.phone?" · "+esc(o.phone):"")+'</p><table><tr><th>Item</th><th>Qty</th><th>Rate</th><th>Amount</th></tr>'+o.items.map(function(i){return'<tr><td>'+esc(i.d)+'</td><td>'+i.q+'</td><td>'+inr.format(i.r)+'</td><td>'+inr.format(i.q*i.r)+'</td></tr>'}).join("")+'</table><p>Subtotal: '+inr.format(o.sub)+'<br>GST ('+o.gst+'%): '+inr.format(o.gstAmt)+'<br>Discount: '+inr.format(o.dis)+'</p><h3>Total: '+inr.format(o.tot)+'</h3><p>Thank you for your business.</p>'}
+function billTxt(o){return"Hike CRM\nInvoice "+o.no+" ("+o.date+")\nCustomer: "+(o.cust||"Customer")+"\n\n"+o.items.map(function(i){return i.d+" x"+i.q+" @ "+inr.format(i.r)+" = "+inr.format(i.q*i.r)}).join("\n")+"\n\nSubtotal: "+inr.format(o.sub)+"\nGST ("+o.gst+"%): "+inr.format(o.gstAmt)+"\nDiscount: "+inr.format(o.dis)+"\nTOTAL: "+inr.format(o.tot)}
+function openBill(){if(ed<0&&!$("bn").value)newBill();bList();$("bov").hidden=false;$("bc").focus()}
+$("bi").addEventListener("input",function(e){var t=e.target,i=t.dataset.i;if(i==null)return;items[i][t.dataset.f]=t.value;t.parentNode.lastChild.textContent=inr.format(num(items[i].q)*num(items[i].r));bSum()});
+$("bg").oninput=bSum;$("bd").oninput=bSum;
+$("badd").onclick=function(){items.push({d:"",q:1,r:0});bRows()};
+$("bnew").onclick=newBill;
+$("bsave").onclick=function(){var o=bObj();if(!o.cust){$("bm").textContent="Enter the customer name.";return}if(!(o.tot>0)){$("bm").textContent="Add at least one item with a rate.";return}$("bm").textContent="";
+ if(ed>=0){o.paid=inv[ed].paid;inv[ed]=o}else{o.paid=false;inv.push(o);ed=inv.length-1}saveInv();bList();toast("Invoice "+o.no+" saved.")};
+$("bprint").onclick=function(){var o=bObj();if(!(o.tot>0)){$("bm").textContent="Add items before printing.";return}doPrint(billHtml(o))};
+$("bcopy").onclick=function(){var o=bObj();if(!(o.tot>0)){$("bm").textContent="Add items before copying.";return}copyTxt(billTxt(o))};
+$("bl").onclick=function(e){var b=e.target.closest("button[data-n]");if(!b)return;var n=+b.dataset.n,o=inv[n];
+ if(b.dataset.a==="pay"){o.paid=!o.paid;saveInv();bList()}
+ else{ed=n;items=o.items.map(function(i){return{d:i.d,q:i.q,r:i.r}});$("bc").value=o.cust;$("bp").value=o.phone||"";$("bdt").value=o.date;$("bn").value=o.no;$("bg").value=o.gst;$("bd").value=o.dis;bRows();$("bov").firstChild.scrollTop=0;$("bc").focus()}};
+$("bx").onclick=function(){$("bov").hidden=true};
+function mProfit(m){return sum(Object.keys(data).filter(function(k){return k.indexOf(m)===0}),function(r){return calc(r).profit})}
+function sMonth(){return $("sm").value||cur.slice(0,7)}
+function sNet(s,m){var p=pay[m+"|"+s.id]||{};return Math.max(0,num(s.salary)-num(p.ded))}
+function sTotals(){var m=sMonth(),tot=0,pd=0;staff.forEach(function(s){var n=sNet(s,m),p=pay[m+"|"+s.id]||{};tot+=n;if(p.paid)pd+=n});var pr=mProfit(m);
+ $("st2").innerHTML="Total salary bill: <b>"+inr.format(tot)+"</b> · Paid: <b>"+inr.format(pd)+"</b> · Pending: <b>"+inr.format(tot-pd)+"</b><br>Profit this month before salary: <b>"+inr.format(pr)+"</b> · After salary: <b>"+inr.format(pr-tot)+"</b>"}
+function sRender(){var m=sMonth();$("sb").innerHTML=staff.map(function(s,i){var p=pay[m+"|"+s.id]||{};return'<tr><td><input data-s="'+i+'" data-f="name" value="'+esc(s.name)+'" aria-label="Staff name"></td><td><input data-s="'+i+'" data-f="salary" type="number" min="0" value="'+s.salary+'" aria-label="Monthly salary"></td><td><input data-s="'+i+'" data-f="ded" type="number" min="0" value="'+(p.ded||"")+'" placeholder="0" aria-label="Deduction"></td><td><b>'+inr.format(sNet(s,m))+'</b></td><td style="white-space:nowrap"><button data-s="'+i+'" data-a="paid" class="'+(p.paid?"pd":"")+'">'+(p.paid?"Paid":"Mark paid")+'</button> <button data-s="'+i+'" data-a="slip">Salary slip</button></td></tr>'}).join("");sTotals()}
+function openSal(){$("sm").value=cur.slice(0,7);sRender();$("sov").hidden=false}
+$("sm").onchange=sRender;
+$("sb").addEventListener("input",function(e){var t=e.target,i=t.dataset.s;if(i==null)return;var s=staff[i],m=sMonth(),k=m+"|"+s.id;
+ if(t.dataset.f==="ded"){pay[k]=pay[k]||{};pay[k].ded=num(t.value)}else if(t.dataset.f==="salary")s.salary=num(t.value);else s.name=t.value;
+ saveSal();t.closest("tr").querySelector("b").textContent=inr.format(sNet(s,m));sTotals()});
+$("sb").onclick=function(e){var b=e.target.closest("button[data-s]");if(!b)return;var s=staff[b.dataset.s],m=sMonth(),k=m+"|"+s.id;pay[k]=pay[k]||{};
+ if(b.dataset.a==="paid"){pay[k].paid=!pay[k].paid;pay[k].on=pay[k].paid?TODAY:"";saveSal();sRender()}
+ else showSlip(s,m,k)};
+var curSlip="",curSlipTxt="";
+function mLabel(m){return new Date(+m.slice(0,4),+m.slice(5,7)-1,1).toLocaleDateString("en-IN",{month:"long",year:"numeric"})}
+function showSlip(s,m,k){var p=pay[k]||{},d=num(p.ded),n=sNet(s,m);
+ curSlip='<h2>Hike CRM</h2><p><b>SALARY SLIP</b> · '+esc(mLabel(m))+'</p><p><b>Employee:</b> '+esc(s.name)+'</p>'+(s.role?'<p><b>Role:</b> '+esc(s.role)+(s.join?' · Joined '+esc(s.join):"")+'</p>':"")+'<table><tr><td>Monthly salary</td><td>'+inr.format(num(s.salary))+'</td></tr><tr><td>Deductions (leave or advance)</td><td>'+inr.format(d)+'</td></tr><tr class="net"><th>Net pay</th><th>'+inr.format(n)+'</th></tr></table><p><b>Status:</b> <span class="stp'+(p.paid?" ok":"")+'">'+(p.paid?"Paid on "+esc(p.on):"Pending")+'</span></p>';
+ curSlipTxt="Hike CRM - Salary slip\n"+mLabel(m)+"\nEmployee: "+s.name+"\nMonthly salary: "+inr.format(num(s.salary))+"\nDeductions: "+inr.format(d)+"\nNET PAY: "+inr.format(n)+"\nStatus: "+(p.paid?"Paid on "+p.on:"Pending");
+ $("slip").innerHTML=curSlip;$("lov").hidden=false}
+$("lprint").onclick=function(){doPrint(curSlip)};
+$("lcopy").onclick=function(){copyTxt(curSlipTxt)};
+$("lx").onclick=$("lclose").onclick=function(){$("lov").hidden=true};
+$("lov").onclick=function(e){if(e.target===$("lov"))$("lov").hidden=true};
+$("sadd").onclick=function(){staff.push({id:"s"+Date.now(),name:"New staff",salary:5000});saveSal();sRender()};
+$("sbill").onclick=function(){var m=sMonth(),tot=0;doPrint('<h2>Hike CRM</h2><p><b>MONTHLY SALARY BILL</b> · '+esc(m)+'</p><table><tr><th>Staff</th><th>Salary</th><th>Deduction</th><th>Net pay</th><th>Status</th></tr>'+staff.map(function(s){var p=pay[m+"|"+s.id]||{},n=sNet(s,m);tot+=n;return'<tr><td>'+esc(s.name)+'</td><td>'+inr.format(num(s.salary))+'</td><td>'+inr.format(num(p.ded))+'</td><td>'+inr.format(n)+'</td><td>'+(p.paid?"Paid":"Pending")+'</td></tr>'}).join("")+'</table><h3>Total: '+inr.format(tot)+'</h3>')};
+$("sx").onclick=function(){$("sov").hidden=true};
+$("bov").onclick=function(e){if(e.target===$("bov"))$("bov").hidden=true};
+$("sov").onclick=function(e){if(e.target===$("sov"))$("sov").hidden=true};
+document.addEventListener("keydown",function(e){if(e.key==="Escape"){$("bov").hidden=true;$("sov").hidden=true;$("lov").hidden=true;$("wov").hidden=true;$("qov").hidden=true;$("gov").hidden=true}});
+document.addEventListener("click",function(e){var a=e.target.closest("[data-act]");if(!a)return;if(a.dataset.act==="bill")openBill();if(a.dataset.act==="sal")openSal()});
+var LK="hike-crm-leads-v1",leads=[],wa={num:"",tpl:"Hi {name}, thanks for contacting Hike CRM. How can we help you today?"},wf="All",wq="",wed=-1,STG=["New","Contacted","Interested","Follow-up","Won","Lost"],SRC=["Meta ad","WhatsApp","Walk-in","Referral","Other"];
+try{var lv=JSON.parse(localStorage.getItem(LK));if(lv){leads=lv.leads||[];wa=Object.assign(wa,lv.wa||{})}}catch(e){}
+function saveL(){try{localStorage.setItem(LK,JSON.stringify({leads:leads,wa:wa}))}catch(e){}}
+function ph(p){var d=String(p||"").replace(/\D/g,"");return d.length===10?"91"+d:d}
+function waLink(l){return"https://wa.me/"+ph(l.phone)+"?text="+encodeURIComponent((wa.tpl||"").replace(/\{name\}/g,l.name))}
+function opts(a,v){return a.map(function(x){return'<option'+(x===v?" selected":"")+'>'+x+'</option>'}).join("")}
+function wClear(){wed=-1;$("wn").value="";$("wp").value="";$("ws").innerHTML=opts(SRC,"Meta ad");$("wst").innerHTML=opts(STG,"New");$("wfu").value="";$("wno").value="";$("wm").textContent=""}
+function wRender(){var cnt={};leads.forEach(function(l){cnt[l.stage]=(cnt[l.stage]||0)+1});
+ $("wch").innerHTML=["All"].concat(STG).map(function(s){return'<button data-f="'+s+'" class="'+(wf===s?"on":"")+'">'+s+" "+(s==="All"?leads.length:(cnt[s]||0))+'</button>'}).join("");
+ var q=wq.toLowerCase(),rows=leads.map(function(l,i){return{l:l,i:i}}).filter(function(x){return(wf==="All"||x.l.stage===wf)&&(!q||(x.l.name+x.l.phone+(x.l.note||"")).toLowerCase().indexOf(q)>-1)}).sort(function(a,b){return(a.l.fu||"9999").localeCompare(b.l.fu||"9999")});
+ $("wl").innerHTML=rows.map(function(x){var l=x.l,i=x.i,due=l.fu&&l.fu<=TODAY&&l.stage!=="Won"&&l.stage!=="Lost";
+  return'<tr><td><b>'+esc(l.name)+'</b><br><small>+'+esc(ph(l.phone))+' · '+esc(l.src)+'</small>'+(l.note?'<br><small>'+esc(l.note)+'</small>':"")+'</td><td><select data-i="'+i+'" data-f="stage" aria-label="Stage">'+opts(STG,l.stage)+'</select></td><td><input type="date" data-i="'+i+'" data-f="fu" value="'+esc(l.fu||"")+'" aria-label="Follow-up date">'+(due?'<small class="due">Follow-up due</small>':"")+'</td><td><small>'+esc(l.last||"–")+'</small></td><td style="white-space:nowrap"><a class="wa" data-i="'+i+'" href="'+waLink(l)+'" target="_blank" rel="noopener noreferrer">WhatsApp</a> <button data-i="'+i+'" data-a="copy">Link</button> <button data-i="'+i+'" data-a="edit">Edit</button>'+(l.stage==="Won"?' <button data-i="'+i+'" data-a="inv">Invoice</button>':"")+' <button data-i="'+i+'" data-a="prop">Proposal</button> <button data-i="'+i+'" data-a="del">Delete</button></td></tr>'}).join("")||'<tr><td colspan="5" class="empty">'+(leads.length?"No leads match.":"No leads yet. Add your first lead above.")+'</td></tr>'}
+function openLeads(){$("wtpl").value=wa.tpl;$("wmy").value=wa.num;if(wed<0)wClear();wRender();$("wov").hidden=false}
+$("wsave").onclick=function(){var n=$("wn").value.trim(),p=ph($("wp").value);if(!n){$("wm").textContent="Enter the lead’s name.";return}if(p.length<10){$("wm").textContent="Enter a valid WhatsApp number.";return}
+ var o={name:n,phone:p,src:$("ws").value,stage:$("wst").value,fu:$("wfu").value,note:$("wno").value.trim(),last:wed>=0?leads[wed].last:"",added:wed>=0?leads[wed].added:TODAY};
+ if(wed>=0)leads[wed]=o;else leads.push(o);saveL();wClear();wRender();toast("Lead saved.")};
+$("wclear").onclick=wClear;
+$("wtpl").oninput=function(){wa.tpl=$("wtpl").value;saveL();wRender()};
+$("wmy").oninput=function(){wa.num=$("wmy").value.replace(/[^\d+ ]/g,"");saveL()};
+$("wmycopy").onclick=function(){var p=ph(wa.num);if(p.length<10){toast("Enter your business WhatsApp number first.");return}copyTxt("https://wa.me/"+p+"?text="+encodeURIComponent("Hi, I am interested. Please share details."))};
+$("wq").oninput=function(){wq=$("wq").value;wRender()};
+$("wch").onclick=function(e){var b=e.target.closest("button[data-f]");if(b){wf=b.dataset.f;wRender()}};
+$("wl").addEventListener("change",function(e){var t=e.target,i=t.dataset.i;if(i==null)return;leads[i][t.dataset.f]=t.value;saveL();wRender()});
+$("wl").onclick=function(e){var a=e.target.closest("a.wa");if(a){var l=leads[a.dataset.i];l.last=TODAY;if(l.stage==="New")l.stage="Contacted";saveL();setTimeout(wRender,400);return}
+ var b=e.target.closest("button[data-a]");if(!b)return;var i=+b.dataset.i,l=leads[i],k=b.dataset.a;
+ if(k==="copy")copyTxt(waLink(l));
+ else if(k==="edit"){wed=i;$("wn").value=l.name;$("wp").value=l.phone;$("ws").innerHTML=opts(SRC,l.src);$("wst").innerHTML=opts(STG,l.stage);$("wfu").value=l.fu||"";$("wno").value=l.note||"";$("wov").firstChild.scrollTop=0;$("wn").focus()}
+ else if(k==="inv"){$("wov").hidden=true;newBill();$("bc").value=l.name;$("bp").value=l.phone;openBill()}
+ else if(k==="prop"){$("wov").hidden=true;newProp(l);openProp()}
+ else if(k==="del"){if(b.dataset.arm){leads.splice(i,1);if(wed===i)wClear();saveL();wRender();toast("Lead deleted.")}else{b.dataset.arm="1";b.textContent="Sure?";setTimeout(wRender,3000)}}};
+$("wx").onclick=function(){$("wov").hidden=true};
+$("wov").onclick=function(e){if(e.target===$("wov"))$("wov").hidden=true};
+document.addEventListener("click",function(e){var a=e.target.closest("[data-act='leads']");if(a)openLeads()});
+var PK="hike-crm-proposals-v1",props=[],qitems=[{d:"",q:1,r:0}],qed=-1,PST=["Draft","Sent","Accepted","Rejected"];
+var TERMS="1. 50% advance to start the work, balance on completion.\n2. Prices are in Indian rupees and exclude any taxes not shown above.\n3. This proposal is valid until the date shown. Work begins once it is accepted and the advance is received.";
+try{props=JSON.parse(localStorage.getItem(PK))||[];}catch(e){}
+function saveP(){try{localStorage.setItem(PK,JSON.stringify(props))}catch(e){}}
+function RS(n){return"Rs. "+Number(n).toLocaleString("en-IN",{maximumFractionDigits:2})}
+function pNo(){return"PR-"+String(props.length+1).padStart(4,"0")}
+function qTot(){var sub=qitems.reduce(function(a,i){return a+num(i.q)*num(i.r)},0),g=sub*num($("qg").value)/100,d=num($("qdis").value);return{sub:sub,gst:g,dis:d,tot:Math.max(0,sub+g-d)}}
+function qSum(){var t=qTot();$("qs").innerHTML="Subtotal: <b>"+inr.format(t.sub)+"</b><br>GST: <b>"+inr.format(t.gst)+"</b><br>Discount: <b>"+inr.format(t.dis)+"</b><br>Total: <b style=\"font-size:20px\">"+inr.format(t.tot)+"</b>"}
+function qRows(){$("qit").innerHTML=qitems.map(function(it,i){return'<div class="ir"><input data-i="'+i+'" data-f="d" placeholder="Scope or service" value="'+esc(it.d)+'" aria-label="Scope"><input data-i="'+i+'" data-f="q" type="number" min="0" step="any" value="'+it.q+'" aria-label="Quantity"><input data-i="'+i+'" data-f="r" type="number" min="0" step="any" value="'+it.r+'" aria-label="Rate"><b>'+inr.format(num(it.q)*num(it.r))+'</b></div>'}).join("");qSum()}
+function qClients(){$("qcl").innerHTML='<option value="">New client</option>'+leads.map(function(l,i){return'<option value="'+i+'">'+esc(l.name)+' ('+esc(l.stage)+')</option>'}).join("")}
+function newProp(l){qitems=[{d:"",q:1,r:0}];qed=-1;qClients();$("qcl").value=l?String(leads.indexOf(l)):"";
+ $("qc").value=l?l.name:"";$("qco").value="";$("qp").value=l?l.phone:"";$("qe").value="";$("qt").value="";$("qd").value=TODAY;$("qv").value=shift(TODAY,15);$("qn").value=pNo();$("qi").value="";$("qterm").value=TERMS;$("qg").value=0;$("qdis").value=0;$("qm").textContent="";qRows()}
+function qObj(){var t=qTot();return{no:$("qn").value,date:$("qd").value,valid:$("qv").value,client:$("qc").value.trim(),company:$("qco").value.trim(),phone:$("qp").value.trim(),email:$("qe").value.trim(),title:$("qt").value.trim(),intro:$("qi").value.trim(),items:qitems.filter(function(i){return num(i.q)*num(i.r)>0||i.d.trim()}).map(function(i){return{d:i.d,q:num(i.q),r:num(i.r)}}),gst:num($("qg").value),dis:t.dis,sub:t.sub,gstAmt:t.gst,tot:t.tot,terms:$("qterm").value.trim(),status:qed>=0?props[qed].status:"Draft"}}
+function qOk(o){if(!o.client){$("qm").textContent="Enter the client name.";return false}if(!(o.tot>0)){$("qm").textContent="Add at least one item with a rate.";return false}$("qm").textContent="";return true}
+function qList(){$("ql").innerHTML=props.map(function(o,n){return{o:o,n:n}}).reverse().map(function(x){var o=x.o;return'<tr><td>'+esc(o.no)+'</td><td>'+esc(o.client)+'</td><td><small>'+esc(o.title||"-")+'</small></td><td>'+inr.format(o.tot)+'</td><td><select data-n="'+x.n+'" aria-label="Status">'+opts(PST,o.status)+'</select></td><td style="white-space:nowrap"><button data-n="'+x.n+'" data-a="open">Open</button> <button data-n="'+x.n+'" data-a="pdf">PDF</button> <button data-n="'+x.n+'" data-a="del">Delete</button></td></tr>'}).join("")||'<tr><td colspan="6" class="empty">No proposals yet.</td></tr>'}
+function saveProp(o){if(qed>=0)props[qed]=o;else{props.push(o);qed=props.length-1}saveP();qList()}
+function propHtml(o){return'<h2>Hike CRM</h2><p><b>PROPOSAL '+esc(o.no)+'</b> · '+esc(o.date)+' · Valid until '+esc(o.valid||"-")+'</p><p><b>Prepared for:</b> '+esc(o.client)+(o.company?", "+esc(o.company):"")+(o.phone?" · "+esc(o.phone):"")+(o.email?" · "+esc(o.email):"")+'</p><h3>'+esc(o.title||"Proposal")+'</h3><p style="white-space:pre-line">'+esc(o.intro)+'</p><table><tr><th>Scope</th><th>Qty</th><th>Rate</th><th>Amount</th></tr>'+o.items.map(function(i){return'<tr><td>'+esc(i.d)+'</td><td>'+i.q+'</td><td>'+inr.format(i.r)+'</td><td>'+inr.format(i.q*i.r)+'</td></tr>'}).join("")+'</table><p>Subtotal: '+inr.format(o.sub)+'<br>GST ('+o.gst+'%): '+inr.format(o.gstAmt)+'<br>Discount: '+inr.format(o.dis)+'</p><h3>Total: '+inr.format(o.tot)+'</h3><h3>Terms</h3><p style="white-space:pre-line">'+esc(o.terms)+'</p><p style="margin-top:40px">Accepted by (client): ____________________ &nbsp;&nbsp; For Hike CRM: ____________________</p>'}
+function pdfFor(o){var J=window.jspdf&&window.jspdf.jsPDF;if(!J)return null;
+ var d=new J({unit:"pt",format:"a4"}),W=595,M=44,y=0,G=[18,128,76];
+ function pg(){d.addPage();y=56}
+ function need(h){if(y+h>790)pg()}
+ d.setFillColor(G[0],G[1],G[2]);d.rect(0,0,W,86,"F");d.setTextColor(255,255,255);d.setFont("helvetica","bold");d.setFontSize(24);d.text("Hike CRM",M,52);
+ d.setFontSize(12);d.text("PROPOSAL",W-M,40,{align:"right"});d.setFont("helvetica","normal");d.setFontSize(10);d.text(o.no+"   |   "+o.date,W-M,58,{align:"right"});
+ y=120;d.setTextColor(110,110,110);d.setFontSize(9);d.text("PREPARED FOR",M,y);d.text("VALID UNTIL: "+(o.valid||"-"),W-M,y,{align:"right"});
+ y+=18;d.setTextColor(20,20,20);d.setFont("helvetica","bold");d.setFontSize(14);d.text(o.client,M,y);d.setFont("helvetica","normal");d.setFontSize(10);y+=15;
+ [o.company,o.phone,o.email].filter(Boolean).forEach(function(t){d.text(t,M,y);y+=13});
+ y+=16;d.setTextColor(G[0],G[1],G[2]);d.setFont("helvetica","bold");d.setFontSize(18);var tl=d.splitTextToSize(o.title||"Proposal",W-2*M);d.text(tl,M,y);y+=tl.length*22;
+ d.setTextColor(45,45,45);d.setFont("helvetica","normal");d.setFontSize(10.5);d.splitTextToSize(o.intro||"",W-2*M).forEach(function(l){need(15);d.text(l,M,y);y+=15});
+ y+=14;
+ function head(){d.setFillColor(G[0],G[1],G[2]);d.rect(M,y,W-2*M,24,"F");d.setTextColor(255,255,255);d.setFont("helvetica","bold");d.setFontSize(10);d.text("Scope",M+8,y+16);d.text("Qty",350,y+16,{align:"right"});d.text("Rate",450,y+16,{align:"right"});d.text("Amount",W-M-8,y+16,{align:"right"});y+=24;d.setFont("helvetica","normal");d.setTextColor(30,30,30)}
+ need(70);head();
+ o.items.forEach(function(i,n){var ls=d.splitTextToSize(i.d||"-",270),h=Math.max(24,ls.length*13+11);if(y+h>790){pg();head()}
+  if(n%2===0){d.setFillColor(238,246,241);d.rect(M,y,W-2*M,h,"F")}d.setFontSize(10);d.setTextColor(30,30,30);
+  d.text(ls,M+8,y+16);d.text(String(i.q),350,y+16,{align:"right"});d.text(RS(i.r),450,y+16,{align:"right"});d.text(RS(i.q*i.r),W-M-8,y+16,{align:"right"});y+=h});
+ y+=14;need(100);
+ function row(l,v,b){d.setFont("helvetica",b?"bold":"normal");d.setFontSize(b?13:10);if(b)d.setTextColor(G[0],G[1],G[2]);else d.setTextColor(45,45,45);d.text(l,370,y);d.text(v,W-M-8,y,{align:"right"});y+=b?24:17}
+ row("Subtotal",RS(o.sub));row("GST ("+o.gst+"%)",RS(o.gstAmt));row("Discount","- "+RS(o.dis));row("Total",RS(o.tot),true);
+ y+=12;need(60);d.setTextColor(G[0],G[1],G[2]);d.setFont("helvetica","bold");d.setFontSize(12);d.text("Terms and payment",M,y);y+=17;
+ d.setTextColor(45,45,45);d.setFont("helvetica","normal");d.setFontSize(10);d.splitTextToSize(o.terms||"",W-2*M).forEach(function(l){need(14);d.text(l,M,y);y+=14});
+ need(90);y+=46;d.setDrawColor(150,150,150);d.line(M,y,M+200,y);d.line(W-M-200,y,W-M,y);d.setFontSize(9);d.setTextColor(110,110,110);d.text("Accepted by (client)",M,y+13);d.text("For Hike CRM",W-M-200,y+13);
+ var n=d.getNumberOfPages();for(var p=1;p<=n;p++){d.setPage(p);d.setFontSize(8);d.setTextColor(140,140,140);d.text("Hike CRM  |  "+o.no+"  |  Page "+p+" of "+n,W/2,820,{align:"center"})}
+ return d.output("blob")}
+async function sendPdf(o){var blob=pdfFor(o);if(!blob){toast("The PDF tool did not load. Use Print instead.");return}
+ var dl=null;try{dl=window.claude&&await window.claude.use("downloads")}catch(e){}
+ if(!dl){try{var u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="Proposal-"+o.no+"-"+(o.client||"client").replace(/[^\w]+/g,"-")+".pdf";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000);toast("PDF downloaded.")}catch(e){doPrint(propHtml(o))}return}
+ try{await dl.save({filename:"Proposal-"+o.no+"-"+(o.client||"client").replace(/[^\w]+/g,"-")+".pdf",data:blob});toast("PDF ready.")}catch(e){if(!e||e.code!=="declined")toast("Could not save the PDF here. Use Print instead.")}}
+function openProp(){if(qed<0&&!$("qn").value)newProp();qClients();qList();$("qov").hidden=false;$("qc").focus()}
+$("qit").addEventListener("input",function(e){var t=e.target,i=t.dataset.i;if(i==null)return;qitems[i][t.dataset.f]=t.value;t.parentNode.lastChild.textContent=inr.format(num(qitems[i].q)*num(qitems[i].r));qSum()});
+$("qg").oninput=qSum;$("qdis").oninput=qSum;
+$("qadd").onclick=function(){qitems.push({d:"",q:1,r:0});qRows()};
+$("qnew").onclick=function(){newProp()};
+$("qcl").onchange=function(){var l=leads[$("qcl").value];if(l){$("qc").value=l.name;$("qp").value=l.phone}};
+$("qauto").onclick=function(){var c=$("qc").value.trim()||"there",t=$("qt").value.trim()||"your project";$("qi").value="Dear "+c+",\n\nThank you for the opportunity to work with you. This proposal sets out our recommended scope, timeline and pricing for "+t+". We have kept the pricing clear so you know exactly what to expect, and we are ready to start as soon as you approve.";if(!$("qterm").value.trim())$("qterm").value=TERMS;toast("Intro and terms written. Edit them if you like.")};
+$("qsave").onclick=function(){var o=qObj();if(!qOk(o))return;saveProp(o);toast("Proposal "+o.no+" saved.")};
+$("qpdf").onclick=function(){var o=qObj();if(!qOk(o))return;saveProp(o);sendPdf(o)};
+$("qprint").onclick=function(){var o=qObj();if(!qOk(o))return;doPrint(propHtml(o))};
+$("ql").addEventListener("change",function(e){var t=e.target,n=t.dataset.n;if(n==null)return;props[n].status=t.value;saveP()});
+$("ql").onclick=function(e){var b=e.target.closest("button[data-n]");if(!b)return;var n=+b.dataset.n,o=props[n],k=b.dataset.a;
+ if(k==="pdf")sendPdf(o);
+ else if(k==="open"){qed=n;qitems=o.items.map(function(i){return{d:i.d,q:i.q,r:i.r}});qClients();$("qcl").value="";$("qc").value=o.client;$("qco").value=o.company||"";$("qp").value=o.phone||"";$("qe").value=o.email||"";$("qt").value=o.title||"";$("qd").value=o.date;$("qv").value=o.valid||"";$("qn").value=o.no;$("qi").value=o.intro||"";$("qterm").value=o.terms||"";$("qg").value=o.gst;$("qdis").value=o.dis;qRows();$("qov").firstChild.scrollTop=0}
+ else if(k==="del"){if(b.dataset.arm){props.splice(n,1);if(qed===n)newProp();saveP();qList();toast("Proposal deleted.")}else{b.dataset.arm="1";b.textContent="Sure?";setTimeout(qList,3000)}}};
+$("qx").onclick=function(){$("qov").hidden=true};
+$("qov").onclick=function(e){if(e.target===$("qov"))$("qov").hidden=true};
+document.addEventListener("click",function(e){var a=e.target.closest("[data-act='prop']");if(a)openProp()});
+var ged=-1;
+function gClear(){ged=-1;$("gn").value="";$("gr").value="";$("gp").value="";$("ge").value="";$("gj").value=TODAY;$("gs").value=5000;$("ga").value="";$("gno").value="";$("gm").textContent=""}
+function gRender(){var tot=staff.reduce(function(a,s){return a+num(s.salary)},0);$("gsum").innerHTML="Staff: <b>"+staff.length+"</b> · Monthly payroll: <b>"+inr.format(tot)+"</b>";
+ $("gl").innerHTML=staff.map(function(s,i){return'<tr><td><b>'+esc(s.name)+'</b><br><small>'+esc(s.role||"-")+'</small>'+(s.addr?'<br><small>'+esc(s.addr)+'</small>':"")+'</td><td><small>'+esc(s.phone||"-")+(s.email?"<br>"+esc(s.email):"")+'</small></td><td><small>'+esc(s.join||"-")+'</small></td><td>'+inr.format(num(s.salary))+'</td><td style="white-space:nowrap"><button data-i="'+i+'" data-a="edit">Edit</button> <button data-i="'+i+'" data-a="del">Delete</button></td></tr>'}).join("")||'<tr><td colspan="5" class="empty">No staff yet.</td></tr>'}
+function openStaff(){if(ged<0)gClear();gRender();$("gov").hidden=false;$("gn").focus()}
+$("gsave").onclick=function(){var n=$("gn").value.trim();if(!n){$("gm").textContent="Enter the staff name.";return}
+ var o={id:ged>=0?staff[ged].id:"s"+Date.now(),name:n,role:$("gr").value.trim(),phone:$("gp").value.trim(),email:$("ge").value.trim(),join:$("gj").value,salary:num($("gs").value),addr:$("ga").value.trim(),note:$("gno").value.trim()};
+ if(ged>=0)staff[ged]=o;else staff.push(o);saveSal();gClear();gRender();toast("Staff saved.")};
+$("gclear").onclick=gClear;
+$("gl").onclick=function(e){var b=e.target.closest("button[data-i]");if(!b)return;var i=+b.dataset.i,s=staff[i];
+ if(b.dataset.a==="edit"){ged=i;$("gn").value=s.name;$("gr").value=s.role||"";$("gp").value=s.phone||"";$("ge").value=s.email||"";$("gj").value=s.join||"";$("gs").value=s.salary;$("ga").value=s.addr||"";$("gno").value=s.note||"";$("gov").firstChild.scrollTop=0;$("gn").focus()}
+ else if(b.dataset.arm){staff.splice(i,1);if(ged===i)gClear();saveSal();gRender();toast("Staff deleted.")}else{b.dataset.arm="1";b.textContent="Sure?";setTimeout(gRender,3000)}};
+$("gx").onclick=function(){$("gov").hidden=true};
+$("gov").onclick=function(e){if(e.target===$("gov"))$("gov").hidden=true};
+document.addEventListener("click",function(e){var a=e.target.closest("[data-act='staff']");if(a){$("sov").hidden=true;openStaff()}});
+newBill();
+setDate(TODAY);
+})();
+</script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script>
+</body>
+</html>
